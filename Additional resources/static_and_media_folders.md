@@ -103,9 +103,9 @@ Media files are user-uploaded files, such as profile pictures, documents, or oth
    │   ├── uploads/
    ```
 
-### Serving Media Files in Development
+### Serving Static and Media Files in Development
 
-To serve media files during development, add the following to your project's `urls.py` file:
+Django does not serve user-uploaded media or collected static files by default. During development, you can enable this by updating your project's `urls.py`:
 
 ```python
 from django.conf import settings
@@ -116,12 +116,18 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
+    # Serve media files
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    
+    # Serve static files
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 ```
 
-This ensures that media files are served when `DEBUG = True`.
+* **Media files**: These are user-uploaded files (e.g., profile pictures, documents) stored in `MEDIA_ROOT` and served under `MEDIA_URL`.
+* **Static files**: These are assets such as CSS, JavaScript, and images that belong to your project or apps. They are collected into `STATIC_ROOT` and served under `STATIC_URL`.
 
----
+⚠️ **Note:** This setup works only when `DEBUG = True`. In production, you should serve static and media files with a proper web server (e.g., Nginx, Apache, or a CDN).
+
 
 ## 3. Production Considerations
 
